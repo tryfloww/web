@@ -60,8 +60,6 @@ export const GET = async (req: NextRequest) => {
             email: googleData.email,
             userName: googleData.email.split("@")[0],
             id: googleData.id,
-            provider: "google",
-            isEmailVerified: googleData.verified_email,
             accessToken,
             expiresAt: Math.floor(accessTokenExpiresAt.getTime() / 1000), // Store as Unix timestamp
             refreshToken,

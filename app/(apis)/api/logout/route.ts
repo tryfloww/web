@@ -21,13 +21,13 @@ export const POST = async () => {
     );
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
-    if (error?.message) {
+  } catch (error: unknown) {
+    if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
     return NextResponse.json(
       { error: "An error occurred while signing out" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 };
