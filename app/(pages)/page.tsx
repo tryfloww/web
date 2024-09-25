@@ -1,18 +1,12 @@
-"use client"
-import { Button } from "@/components/ui/button";
+import { validateRequest } from "@/lib/lucia";
+import { SignInButton, SignOutButton } from "@/components/AuthButtons";
 
-import { useRouter } from "next/navigation";
-import { createGoogleAuthorizationURL } from "@/actions/oauth.action";
+export default async function Home() {
+  const { user } = await validateRequest();
 
-export default function Home() {
-  const router = useRouter();
-  async function handleSignin() {
-    const res = await createGoogleAuthorizationURL();
-    return router.push(res.data!);
-  }
   return (
     <div className="min-h-screen font-[family-name:var(--font-geist-sans)]">
-      <Button onClick={handleSignin}>sign in</Button>
+      {user ? <SignOutButton /> : <SignInButton />}
     </div>
   );
 }

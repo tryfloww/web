@@ -1,6 +1,5 @@
 import { Lucia, TimeSpan } from "lucia";
 import adapter from "@/lib/lucia/adapter";
-import { cookies } from "next/headers";
 import type { User } from "lucia";
 import type { Session } from "lucia";
 
@@ -17,6 +16,7 @@ export const lucia = new Lucia(adapter, {
 export const validateRequest = async (): Promise<
   { user: User; session: Session } | { user: null; session: null }
 > => {
+  const { cookies } = await import("next/headers");
   const sessionId = cookies().get(lucia.sessionCookieName)?.value ?? null;
   if (!sessionId) {
     return {
