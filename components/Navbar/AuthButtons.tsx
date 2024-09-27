@@ -36,12 +36,13 @@ export function SignOutButton() {
         },
       });
       if (response.ok) {
+        setLoading(false);
         window.location.href = "/";
       } else {
+        setLoading(false);
         const error = await response.json();
         console.error(error);
       }
-      setLoading(false);
     } catch (error) {
       console.error(error);
     }

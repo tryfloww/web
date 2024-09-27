@@ -19,3 +19,55 @@ export const userTable = sqliteTable("user", {
   refreshToken: text("refresh_token"),
   expiresAt: integer("expires_at").notNull(),
 });
+
+export const youtubeChannelTable = sqliteTable("youtube_channel", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  youtubeId: text("youtube_id").unique().notNull(),
+  name: text("name").notNull(),
+  image: text("image"),
+  subscriberCount: integer("subscriber_count").default(0),
+  ownerId: text("owner_id")
+    .notNull()
+    .references(() => userTable.id),
+});
+
+export const collaboratorTable = sqliteTable("collaborator", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => userTable.id),
+  channelId: text("channel_id")
+    .notNull()
+    .references(() => youtubeChannelTable.id),
+  role: text("role").notNull(),
+});
+
+export const videoTable = sqliteTable("video", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  youtubeId: text("youtube_id").unique().notNull(),
+  channelId: text("channel_id")
+    .notNull()
+    .references(() => youtubeChannelTable.id),
+  title: text("title").notNull(),
+  description: text("description"),
+  thumbnailUrl: text("thumbnail_url"),
+  publishedAt: text("published_at").notNull(),
+});
+
+export const playlistTable = sqliteTable("playlist", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  youtubeId: text("youtube_id").unique().notNull(),
+  channelId: text("channel_id")
+    .notNull()
+    .references(() => youtubeChannelTable.id),
+  title: text("title").notNull(),
+  description: text("description"),
+});

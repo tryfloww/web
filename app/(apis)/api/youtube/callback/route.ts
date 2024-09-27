@@ -26,8 +26,6 @@ export async function GET(request: NextRequest) {
     const { tokens } = await oauth2Client.getToken(code);
     oauth2Client.setCredentials(tokens);
 
-    // In a real application, you'd want to securely store these tokens
-    // For this example, we'll set them in cookies (not recommended for production)
     cookieStore.set("youtube_access_token", tokens.access_token || "", {
       httpOnly: true,
       secure: true,
@@ -41,7 +39,6 @@ export async function GET(request: NextRequest) {
 
     cookieStore.delete("youtube_auth_state");
 
-    // Redirect to a page in your application
     return NextResponse.redirect(
       new URL("/", process.env.NEXT_PUBLIC_BASE_URL),
     );

@@ -8,6 +8,13 @@
       "when": 1727265527998,
       "tag": "0000_friendly_shard",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1727422357786,
+      "tag": "0001_common_betty_brant",
+      "breakpoints": true
     }
   ]
 }

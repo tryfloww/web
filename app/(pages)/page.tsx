@@ -1,15 +1,13 @@
 import { validateRequest } from "@/lib/lucia";
-import ConnectYTButton from "@/components/ConnectYt";
-import { validateConnection } from "@/lib/yt";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
   const { user } = await validateRequest();
-  const {isConnected} = await validateConnection()
+  if (user) {
+    redirect("/dashboard");
+  }
   return (
-    <div className="min-h-screen p-24 font-[family-name:var(--font-geist-sans)]">
-    {user &&
-      (isConnected ? <ConnectYTButton /> : "Hello")
-    }
+    <div className="min-h-screen bg-neutral-100 dark:bg-neutral-950 p-24 font-[family-name:var(--font-geist-sans)]">
     </div>
   );
 }
