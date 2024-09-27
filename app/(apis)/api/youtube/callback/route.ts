@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { google } from "googleapis";
 import { cookies } from "next/headers";
 
-const oauth2Client = new google.auth.OAuth2(
+const youtubeClient = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
   `${process.env.NEXT_PUBLIC_BASE_URL}/api/youtube/callback`,
@@ -23,8 +23,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const { tokens } = await oauth2Client.getToken(code);
-    oauth2Client.setCredentials(tokens);
+    const { tokens } = await youtubeClient.getToken(code);
+    youtubeClient.setCredentials(tokens);
 
     cookieStore.set("youtube_access_token", tokens.access_token || "", {
       httpOnly: true,
