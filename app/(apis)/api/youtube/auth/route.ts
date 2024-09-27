@@ -10,11 +10,13 @@ const oauth2Client = new google.auth.OAuth2(
 
 export async function GET() {
   const cookieStore = cookies();
-  const state = Math.random().toString(36).substring(7);
-  cookieStore.set("youtube_auth_state", state, {
-    httpOnly: true,
-    secure: true,
-  });
+  const userid = cookieStore.get("userId")!;
+
+  if (!userid) {
+    return NextResponse.redirect("/api/oauth/google");
+  }
+
+  const state = JSON.stringify({ userid, random: Math.random().toString(36).substring(7) });
 
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: "offline",

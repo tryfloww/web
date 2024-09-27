@@ -8,11 +8,9 @@ const ConnectYTButton = () => {
 
   const handleAuth = () => {
     setLoading(true);
-    // Redirect to the auth endpoint
     window.location.href = "/api/youtube/auth";
   };
 
-  // Check for the code in the URL (after redirect)
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get("code");

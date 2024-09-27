@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 export default async function Home() {
   const { user } = await validateRequest();
   if (!user) {
-    redirect("/");
+    redirect("/home");
   }
   const { isConnected } = await validateConnection();
   return (

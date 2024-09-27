@@ -15,9 +15,6 @@ export const userTable = sqliteTable("user", {
   userName: text("user_name").notNull(),
   image: text("image").default("https://art.pixilart.com/b40c06d501a0e99.png"),
   email: text("email").unique().notNull(),
-  accessToken: text("access_token").notNull(),
-  refreshToken: text("refresh_token"),
-  expiresAt: integer("expires_at").notNull(),
 });
 
 export const youtubeChannelTable = sqliteTable("youtube_channel", {
@@ -25,6 +22,9 @@ export const youtubeChannelTable = sqliteTable("youtube_channel", {
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   youtubeId: text("youtube_id").unique().notNull(),
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refresh_token"),
+  expiresAt: integer("expires_at").notNull(),
   name: text("name").notNull(),
   image: text("image"),
   subscriberCount: integer("subscriber_count").default(0),

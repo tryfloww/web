@@ -37,8 +37,13 @@ export const GET = async (req: NextRequest) => {
       return Response.json({ error: "State does not match" }, { status: 400 });
     }
 
-    const { accessToken, accessTokenExpiresAt, refreshToken } =
-      await google.validateAuthorizationCode(code, codeVerifier);
+    const { accessToken } = await google.validateAuthorizationCode(
+      code,
+      codeVerifier,
+    );
+
+    // const { accessToken, accessTokenExpiresAt, refreshToken } =
+    //   await google.validateAuthorizationCode(code, codeVerifier);
 
     const googleRes = await fetch(
       "https://www.googleapis.com/oauth2/v1/userinfo",
@@ -60,9 +65,6 @@ export const GET = async (req: NextRequest) => {
             email: googleData.email,
             userName: googleData.email.split("@")[0],
             id: googleData.id,
-            accessToken,
-            expiresAt: Math.floor(accessTokenExpiresAt.getTime() / 1000), // Store as Unix timestamp
-            refreshToken,
           })
           .returning({ id: userTable.id });
         if (!createdUserRes) {
@@ -81,6 +83,8 @@ export const GET = async (req: NextRequest) => {
     cookies().delete("state");
     cookies().delete("codeVerifier");
 
+    console.log("GOOGLEDATA ID", googleData.id)
+    
     cookies().set("userId", googleData.id, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
