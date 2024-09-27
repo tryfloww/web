@@ -81,6 +81,12 @@ export const GET = async (req: NextRequest) => {
     cookies().delete("state");
     cookies().delete("codeVerifier");
 
+    cookies().set("userId", googleData.id, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
     return NextResponse.redirect(
       new URL("/", process.env.NEXT_PUBLIC_BASE_URL),
       { status: 302 },

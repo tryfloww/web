@@ -20,6 +20,8 @@ export const POST = async () => {
       sessionCookie.attributes,
     );
 
+    cookies().delete("userId");
+
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     if (error instanceof Error) {
@@ -27,7 +29,7 @@ export const POST = async () => {
     }
     return NextResponse.json(
       { error: "An error occurred while signing out" },
-      { status: 500 }
+      { status: 500 },
     );
   }
 };
