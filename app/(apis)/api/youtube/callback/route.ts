@@ -38,10 +38,10 @@ export async function GET(request: NextRequest) {
         await db
           .insert(youtubeChannelTable)
           .values({
-            accessToken: tokens.access_token,
+            accessToken: tokens.access_token!,
             name: channel.snippet!.title!,
-            refreshToken: tokens.refresh_token,
-            expiresAt: tokens.expiry_date,
+            refreshToken: tokens.refresh_token!,
+            expiresAt: tokens.expiry_date!,
             ownerId: userid.value,
             youtubeId: channel.id!,
           })
@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
             target: youtubeChannelTable.youtubeId,
             set: {
               name: channel.snippet!.title!,
-              image: channel.snippet!.thumbnails!.default!.url!,
+              image: channel.snippet!.thumbnails!.medium!.url!,
               subscriberCount: parseInt(
                 channel.statistics!.subscriberCount! || "0",
               ),

@@ -73,6 +73,7 @@ export const GET = async (req: NextRequest) => {
 
     const session = await lucia.createSession(googleData.id, {});
     const sessionCookie = lucia.createSessionCookie(session.id);
+
     cookies().set(
       sessionCookie.name,
       sessionCookie.value,
@@ -82,6 +83,7 @@ export const GET = async (req: NextRequest) => {
     cookies().delete("codeVerifier");
 
     cookies().set("userId", googleData.id, {
+      maxAge: 21 * 24 * 60 * 60,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
