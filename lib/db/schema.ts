@@ -14,6 +14,9 @@ export const userTable = sqliteTable("user", {
     .$defaultFn(() => crypto.randomUUID()),
   userName: text("user_name").notNull(),
   image: text("image").default("https://art.pixilart.com/b40c06d501a0e99.png"),
+  accessToken: text("access_token").notNull(),
+  refreshToken: text("refresh_token"),
+  expiresAt: integer("expires_at").notNull(),
   email: text("email").unique().notNull(),
 });
 
