@@ -23,10 +23,11 @@ export const createGoogleAuthorizationURL = async () => {
         scopes: ["email"],
       },
     );
+    authorizationURL.searchParams.set("access_type", "offline");
 
     return {
       success: true,
-      data: authorizationURL.toString(), 
+      data: authorizationURL.toString(),
     };
   } catch (error: unknown) {
     const errorMessage = error instanceof Error ? error.message : String(error);

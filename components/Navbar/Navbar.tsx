@@ -5,7 +5,7 @@ export const Navbar = async () => {
   const { user } = await validateRequest();
 
   return (
-    <div className="fixed top-0 left-0 w-full flex items-center justify-between p-4 bg-neutral-100 dark:bg-neutral-950">
+    <div className="fixed top-0 left-0 w-full flex items-center justify-between p-4 bg-[#f9f9f9] dark:bg-neutral-950">
       <a href="/" className="text-2xl text-neutral-900 dark:text-foreground font-black">
         flow<span className="text-red-600">w.</span>
       </a>

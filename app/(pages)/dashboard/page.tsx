@@ -12,7 +12,7 @@ export default async function Home() {
     redirect("/home");
   }
   return (
-    <div className="h-screen flex flex-col bg-neutral-100 dark:bg-neutral-950 justfiy-center items-center w-screen p-24 font-[family-name:var(--font-geist-sans)]">
+    <div className="h-screen flex flex-col bg-[#f9f9f9] dark:bg-neutral-950 justfiy-center items-center w-screen p-24 font-[family-name:var(--font-geist-sans)]">
       <OwnerBar userId={userId || " "} />
       <OwnedChannels userId={userId || " "} />
     </div>

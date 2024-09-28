@@ -1,9 +1,12 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { validateRequest } from "@/lib/lucia";
+import { cookies } from "next/headers";
 
 export async function middleware(request: NextRequest) {
+  const cookie = cookies();
   const { session } = await validateRequest();
+  console.log(cookie.get("userId"));
   if (session) {
     return NextResponse.next();
   } else {

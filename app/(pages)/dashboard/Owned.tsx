@@ -25,7 +25,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
 
   useEffect(() => {
     const fetchOwnedChannels = async () => {
-      setLoading(true)
+      setLoading(true);
       try {
         const response = await fetch("/api/youtube/channels/owned", {
           headers: {
@@ -62,25 +62,31 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
 
   return (
     <div className="flex w-full mt-4">
-      {channels.map((channel) => (
-        <div className="p-3 w-1/3" key={channel.id}>
-          <Card className="w-full hover:border-red-700 cursor-pointer transition">
-            <CardHeader>
-              <CardTitle>{channel.name}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Image
-                className="rounded-full mb-2"
-                width={32}
-                height={32}
-                src={channel.image || `/default.png`}
-                alt={channel.name}
-              />
-              <p>Subscribers: {channel.subscriberCount}</p>
-            </CardContent>
-          </Card>
+      {channels.length > 0 ? (
+        channels.map((channel) => (
+          <div className="p-3 w-1/3" key={channel.id}>
+            <Card className="w-full hover:border-red-700 cursor-pointer transition">
+              <CardHeader>
+                <CardTitle>{channel.name}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <Image
+                  className="rounded-full mb-2"
+                  width={32}
+                  height={32}
+                  src={channel.image || `/default.png`}
+                  alt={channel.name}
+                />
+                <p>Subscribers: {channel.subscriberCount}</p>
+              </CardContent>
+            </Card>
+          </div>
+        ))
+      ) : (
+        <div className="w-full p-4 text-center text-neutral-500 dark:text-foreground border-neutral-200 rounded-md dark:border-secondary border-[1px]">
+          No channels owned by you are connected.
         </div>
-      ))}
+      )}
     </div>
   );
 };

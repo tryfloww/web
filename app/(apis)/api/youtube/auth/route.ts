@@ -16,7 +16,10 @@ export async function GET() {
     return NextResponse.redirect("/api/oauth/google");
   }
 
-  const state = JSON.stringify({ userid, random: Math.random().toString(36).substring(7) });
+  const state = JSON.stringify({
+    userid,
+    random: Math.random().toString(36).substring(7),
+  });
 
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: "offline",
