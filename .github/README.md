@@ -1,9 +1,16 @@
 <div align="center">
+<h2>floww</h2>
 <img src="https://i.imgur.com/VTrFdx4.png">
-<h3>floww</h3>
-<p>refining and redefining how youtuber's collaborate with their team.</p>
+<i>refining and redefining how youtuber's collaborate with their team.</i>
+<br>
+<img src="https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white">
+<img src="https://img.shields.io/badge/YouTube-%23FF0000.svg?style=for-the-badge&logo=YouTube&logoColor=white">
+<img src="https://img.shields.io/badge/sqlite-%2307405e.svg?style=for-the-badge&logo=sqlite&logoColor=white">
+<img src="https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white">
 </div>
 
+### About
+floww is a platform that allows youtubers to collaborate with their team, without having to worry about their team defecting and sabotaging their channel. It allows youtubers to create a team, and assign permissions to each member.
 
 ### Tech Stack
 1. [Next.js](https://nextjs.org/)

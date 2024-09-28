@@ -1,12 +1,12 @@
 import { create } from "zustand";
 
 interface RefreshStore {
-  refreshCount: number;
+  triggerChannelRefresh: number;
   triggerRefresh: () => void;
 }
 
 export const useRefreshStore = create<RefreshStore>((set) => ({
-  refreshCount: 0,
+  triggerChannelRefresh: 0,
   triggerRefresh: () =>
-    set((state) => ({ refreshCount: state.refreshCount + 1 })),
+    set((state) => ({ triggerChannelRefresh: state.triggerChannelRefresh + 1 })),
 }));

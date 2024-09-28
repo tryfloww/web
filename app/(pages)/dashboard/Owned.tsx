@@ -21,7 +21,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const { refreshCount } = useRefreshStore();
+  const { triggerChannelRefresh } = useRefreshStore();
 
   useEffect(() => {
     const fetchOwnedChannels = async () => {
@@ -45,7 +45,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
     };
 
     fetchOwnedChannels();
-  }, [refreshCount, userId]);
+  }, [triggerChannelRefresh, userId]);
 
   if (loading)
     return (
