@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
+import { useRefreshStore } from "@/lib/stores/refresh";
 
 interface Channel {
   id: string;
@@ -20,8 +21,11 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  const { refreshCount } = useRefreshStore();
+
   useEffect(() => {
     const fetchOwnedChannels = async () => {
+      setLoading(true)
       try {
         const response = await fetch("/api/youtube/channels/owned", {
           headers: {
@@ -41,7 +45,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
     };
 
     fetchOwnedChannels();
-  }, []);
+  }, [refreshCount, userId]);
 
   if (loading)
     return (
@@ -66,7 +70,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
             </CardHeader>
             <CardContent>
               <Image
-              className="rounded-full mb-2"
+                className="rounded-full mb-2"
                 width={32}
                 height={32}
                 src={channel.image || `/default.png`}

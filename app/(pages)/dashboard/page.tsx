@@ -1,5 +1,5 @@
 import { validateRequest } from "@/lib/lucia";
-import ConnectYT from "./ConnectYt";
+import OwnerBar from "./OwnerBar";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import OwnedChannels from "./Owned";
@@ -13,7 +13,7 @@ export default async function Home() {
   }
   return (
     <div className="h-screen flex flex-col bg-neutral-100 dark:bg-neutral-950 justfiy-center items-center w-screen p-24 font-[family-name:var(--font-geist-sans)]">
-      <ConnectYT userId={userId || " "} />
+      <OwnerBar userId={userId || " "} />
       <OwnedChannels userId={userId || " "} />
     </div>
   );

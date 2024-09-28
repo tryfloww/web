@@ -2,10 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { useRefreshStore } from "@/lib/stores/refresh";
 
-const ConnectYT = ({ userId }: { userId: string }) => {
+const OwnerBar = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
   const [refreshloading, setrefreshloading] = useState(false);
+  const { triggerRefresh } = useRefreshStore();
 
   const handleRefresh = async () => {
     setrefreshloading(true);
@@ -22,6 +24,7 @@ const ConnectYT = ({ userId }: { userId: string }) => {
     } catch (err) {
       console.log(err);
     } finally {
+      triggerRefresh();
       setrefreshloading(false);
     }
   };
@@ -64,4 +67,4 @@ const ConnectYT = ({ userId }: { userId: string }) => {
   );
 };
 
-export default ConnectYT;
+export default OwnerBar;
