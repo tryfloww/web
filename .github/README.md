@@ -10,7 +10,7 @@
 </div>
 
 ### About
-floww is a platform that allows youtubers to collaborate with their team, without having to worry about their team defecting and sabotaging their channel. It allows youtubers to create a team, and assign permissions to each member.
+floww is a platform that allows youtubers to collaborate with their team, without having to worry about their team defecting and sabotaging their channel by allowing the youtubers to create teams for different channels, and assigning specific permissions to each member.
 
 ### Tech Stack
 1. [Next.js](https://nextjs.org/)
