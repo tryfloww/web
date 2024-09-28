@@ -16,7 +16,7 @@ export async function GET(request: NextRequest) {
   }
 
   const userId = cooks.get("userId")?.value;
-  
+
   try {
     if (userId != undefined) {
       const user = await db.query.userTable.findFirst({

@@ -13,7 +13,7 @@ export async function middleware(request: NextRequest) {
       const needsRefresh = tokenExpiresAt && exp < Date.now() / 1000;
 
       if (needsRefresh) {
-        const refreshUrl = new URL("/api/oauth/refresh", request.url);
+        const refreshUrl = new URL("/api/refresh-tokens/oauth", request.url);
         refreshUrl.searchParams.set("redirectTo", request.url);
         return NextResponse.redirect(refreshUrl);
       }
