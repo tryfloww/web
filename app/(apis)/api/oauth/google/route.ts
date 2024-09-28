@@ -61,8 +61,15 @@ export const GET = async (req: NextRequest) => {
             userName: googleData.email.split("@")[0],
             id: googleData.id,
             accessToken,
-            expiresAt: Math.floor(accessTokenExpiresAt.getTime() / 1000), // Store as Unix timestamp
+            expiresAt: Math.floor(accessTokenExpiresAt.getTime() / 1000),
             refreshToken,
+          })
+          .onConflictDoUpdate({
+            target: userTable.id,
+            set: {
+              accessToken,
+              expiresAt: Math.floor(accessTokenExpiresAt.getTime() / 1000),
+            },
           })
           .returning({ id: userTable.id });
         if (!createdUserRes) {
@@ -83,6 +90,13 @@ export const GET = async (req: NextRequest) => {
     cookies().delete("codeVerifier");
 
     cookies().set("userId", googleData.id, {
+      maxAge: 21 * 24 * 60 * 60,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+    });
+
+    cookies().set("tokenExpiresAt", accessTokenExpiresAt.toString(), {
       maxAge: 21 * 24 * 60 * 60,
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
