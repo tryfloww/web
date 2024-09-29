@@ -41,6 +41,7 @@ export async function GET(request: NextRequest) {
             accessToken: tokens.access_token!,
             name: channel.snippet!.title!,
             refreshToken: tokens.refresh_token!,
+            image: channel.snippet!.thumbnails!.medium!.url!,
             expiresAt: tokens.expiry_date!,
             ownerId: userid.value,
             youtubeId: channel.id!,
