@@ -8,7 +8,6 @@ const OwnerBar = ({ userId }: { userId: string }) => {
   const [loading, setLoading] = useState(false);
   const [refreshloading, setrefreshloading] = useState(false);
   const { triggerRefresh } = useRefreshStore();
-
   const handleRefresh = async () => {
     setrefreshloading(true);
 
@@ -46,7 +45,7 @@ const OwnerBar = ({ userId }: { userId: string }) => {
     <Card className="w-full">
       <div className="items-center p-3 justify-between flex">
         <div>
-          <p className="text-xl">
+          <p className="select-none text-xl">
             My <span className="text-red-500">Channels</span>
           </p>
         </div>

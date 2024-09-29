@@ -27,7 +27,6 @@ export const validateRequest = async (): Promise<
 
   const result = await lucia.validateSession(sessionId);
 
-  // next.js throws when you attempt to set cookie when rendering page
   try {
     if (result.session?.fresh) {
       const sessionCookie = lucia.createSessionCookie(result.session.id);
@@ -45,11 +44,10 @@ export const validateRequest = async (): Promise<
         sessionCookie.attributes,
       );
     }
-  } catch {}
+  } catch { }
   return result;
 };
 
-// IMPORTANT!
 declare module "lucia" {
   interface Register {
     Lucia: typeof lucia;

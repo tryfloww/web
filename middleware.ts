@@ -18,7 +18,6 @@ export async function middleware(request: NextRequest) {
       const tokenExpiresAt = result[0].expiresAt
       const needsRefresh = tokenExpiresAt && tokenExpiresAt < Date.now() / 1000;
 
-      console.log(needsRefresh)
       if (needsRefresh) {
         try {
           const refreshUrl = new URL("/api/refresh-tokens/oauth", request.url);
