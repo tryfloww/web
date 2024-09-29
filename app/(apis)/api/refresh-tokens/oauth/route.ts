@@ -6,13 +6,12 @@ import { userTable } from "@/lib/db/schema";
 import { google } from "@/lib/lucia/oauth";
 import { eq } from "drizzle-orm";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
   const cooks = cookies();
   const { session } = await validateRequest();
-  const redirectTo = request.nextUrl.searchParams.get("redirectTo") || "/";
 
   if (!session) {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const userId = cooks.get("userId")?.value;
@@ -22,6 +21,7 @@ export async function GET(request: NextRequest) {
       const user = await db.query.userTable.findFirst({
         where: eq(userTable.id, userId),
       });
+
       if (!user || !user.refreshToken) {
         throw new Error("User not found or refresh token missing");
       }
@@ -38,20 +38,16 @@ export async function GET(request: NextRequest) {
           })
           .where(eq(userTable.id, userId));
 
-        cookies().set("tokenExpiresAt", accessTokenExpiresAt.toString(), {
-          maxAge: 21 * 24 * 60 * 60,
-          httpOnly: true,
-          secure: process.env.NODE_ENV === "production",
-          sameSite: "lax",
-        });
+        return NextResponse.json({ success: true, message: "Token refreshed successfully" });
       } catch (error) {
         console.error("Error refreshing token:", error);
-        throw error;
+        return NextResponse.json({ error: "Failed to refresh token" }, { status: 500 });
       }
+    } else {
+      return NextResponse.json({ error: "User ID not found" }, { status: 400 });
     }
-    return NextResponse.redirect(new URL(redirectTo, request.url));
   } catch (error) {
     console.error("Token refresh failed:", error);
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }

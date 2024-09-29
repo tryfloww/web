@@ -1,24 +1,45 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { validateRequest } from "@/lib/lucia";
+import { cookies } from "next/headers";
+import { db } from "./lib/db/client";
+import { userTable } from "./lib/db/schema";
+import { eq } from "drizzle-orm";
 
 export async function middleware(request: NextRequest) {
   const { session } = await validateRequest();
-
   if (session) {
-    const tokenExpiresAt = request.cookies.get("tokenExpiresAt")?.value;
-    if (tokenExpiresAt != undefined) {
-      const date = new Date(tokenExpiresAt);
-      const exp = Math.floor(date.getTime() / 1000);
-      const needsRefresh = tokenExpiresAt && exp < Date.now() / 1000;
+    const c = cookies();
+    const userId = c.get("userId")?.value!
+    if (userId) {
+      const result = await db.select({
+        expiresAt: userTable.expiresAt,
+      }).from(userTable).where(eq(userTable.id, userId));
+      const tokenExpiresAt = result[0].expiresAt
+      const needsRefresh = tokenExpiresAt && tokenExpiresAt < Date.now() / 1000;
 
+      console.log(needsRefresh)
       if (needsRefresh) {
-        const refreshUrl = new URL("/api/refresh-tokens/oauth", request.url);
-        refreshUrl.searchParams.set("redirectTo", request.url);
-        return NextResponse.redirect(refreshUrl);
+        try {
+          const refreshUrl = new URL("/api/refresh-tokens/oauth", request.url);
+          const response = await fetch(refreshUrl, {
+            method: 'GET',
+            headers: {
+              'Cookie': request.headers.get('cookie') || ''
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('Token refresh failed');
+          }
+
+          return NextResponse.next();
+        } catch (error) {
+          console.error("Error refreshing token:", error);
+          return NextResponse.redirect(new URL("/", request.url));
+        }
       }
     }
-
     return NextResponse.next();
   } else {
     if (
