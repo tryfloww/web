@@ -6,12 +6,17 @@
   - [x] Connect to youtube api
   - [x] Dark and light mode
   - [x] Refresh Tokens
-- [ ] Channels
+- [x] Channel Init
   - [x] Add multiple channels
     - [x] Owned
     - [ ] Member of
   - [x] Create Invites to channel
   - [x] Refresh channel infos
-  - [ ] Refresh Tokens
+  - [x] Refresh Tokens
+  - [ ] Channel Specific pages
+- [ ] Invites and Roles
+    - [ ] Create Roles
+    - [ ] Create Invites 
+    - [ ] Accept / Reject Invites
 
 ... more to come

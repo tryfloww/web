@@ -38,6 +38,26 @@ export async function middleware(request: NextRequest) {
           return NextResponse.redirect(new URL("/", request.url));
         }
       }
+
+      if (request.nextUrl.pathname.startsWith('/channel')) {
+        try {
+          const youtubeRefreshUrl = new URL("/api/refresh-tokens/youtube", request.url);
+          const youtubeResponse = await fetch(youtubeRefreshUrl, {
+            method: 'GET',
+            headers: {
+              'Cookie': request.headers.get('cookie') || ''
+            }
+          });
+
+          if (!youtubeResponse.ok) {
+            throw new Error('YouTube token refresh failed');
+          }
+        } catch (error) {
+          console.error("Error refreshing YouTube token:", error);
+          return NextResponse.json({ error: "Failed to refresh YouTube tokens" }, { status: 500 });
+        }
+      }
+
     }
 
     return NextResponse.next();
