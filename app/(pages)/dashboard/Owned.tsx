@@ -65,7 +65,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
     <div className="flex w-full mt-4">
       {channels.length > 0 ? (
         channels.map((channel) => (
-          <div className="p-3 w-1/3" key={channel.id}>
+          <a href={`/channel/${channel.id}`} className="p-3 w-1/3" key={channel.id}>
             <Card className="w-full hover:border-red-700 cursor-pointer transition">
               <CardHeader>
                 <CardTitle>{channel.name}</CardTitle>
@@ -81,7 +81,7 @@ const OwnedChannels = ({ userId }: { userId: string }) => {
                 <p>Subscribers: {channel.subscriberCount}</p>
               </CardContent>
             </Card>
-          </div>
+          </a>
         ))
       ) : (
         <div className="w-full p-4 text-center text-neutral-500 dark:text-foreground border-neutral-200 rounded-md dark:border-secondary border-[1px]">

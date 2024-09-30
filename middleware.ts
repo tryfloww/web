@@ -3,8 +3,8 @@ import type { NextRequest } from "next/server";
 import { validateRequest } from "@/lib/lucia";
 import { cookies } from "next/headers";
 import { db } from "./lib/db/client";
-import { userTable } from "./lib/db/schema";
-import { eq } from "drizzle-orm";
+import { userTable, youtubeChannelTable, collaboratorTable } from "./lib/db/schema";
+import { eq, or, and } from "drizzle-orm";
 
 export async function middleware(request: NextRequest) {
   const { session } = await validateRequest();
@@ -17,7 +17,6 @@ export async function middleware(request: NextRequest) {
       }).from(userTable).where(eq(userTable.id, userId));
       const tokenExpiresAt = result[0].expiresAt
       const needsRefresh = tokenExpiresAt && tokenExpiresAt < Date.now() / 1000;
-
       if (needsRefresh) {
         try {
           const refreshUrl = new URL("/api/refresh-tokens/oauth", request.url);
@@ -27,12 +26,9 @@ export async function middleware(request: NextRequest) {
               'Cookie': request.headers.get('cookie') || ''
             }
           });
-
           if (!response.ok) {
             throw new Error('Token refresh failed');
           }
-
-          return NextResponse.next();
         } catch (error) {
           console.error("Error refreshing token:", error);
           return NextResponse.redirect(new URL("/", request.url));
@@ -40,26 +36,51 @@ export async function middleware(request: NextRequest) {
       }
 
       if (request.nextUrl.pathname.startsWith('/channel')) {
-        try {
-          const youtubeRefreshUrl = new URL("/api/refresh-tokens/youtube", request.url);
-          const youtubeResponse = await fetch(youtubeRefreshUrl, {
-            method: 'GET',
-            headers: {
-              'Cookie': request.headers.get('cookie') || ''
-            }
-          });
+        const channelIdMatch = request.nextUrl.pathname.match(/^\/channel\/([^\/]+)/);
+        const channelId = channelIdMatch ? channelIdMatch[1] : null;
+        console.log(channelId)
+        if (channelId) {
+          try {
+            const userAccess = await db
+              .select({ id: youtubeChannelTable.id })
+              .from(youtubeChannelTable)
+              .leftJoin(collaboratorTable, eq(youtubeChannelTable.id, collaboratorTable.channelId))
+              .where(
+                and(
+                  eq(youtubeChannelTable.id, channelId),
+                  or(
+                    eq(youtubeChannelTable.ownerId, userId),
+                    eq(collaboratorTable.userId, userId)
+                  )
+                )
+              )
+              .limit(1);
 
-          if (!youtubeResponse.ok) {
-            throw new Error('YouTube token refresh failed');
+            console.log(userAccess)
+
+            if (userAccess.length === 0) {
+              return NextResponse.redirect(new URL("/404", request.url));
+            }
+
+            const youtubeRefreshUrl = new URL("/api/refresh-tokens/youtube", request.url);
+            const youtubeResponse = await fetch(youtubeRefreshUrl, {
+              method: 'GET',
+              headers: {
+                'Cookie': request.headers.get('cookie') || ''
+              }
+            });
+            if (!youtubeResponse.ok) {
+              throw new Error('YouTube token refresh failed');
+            }
+          } catch (error) {
+            console.error("Error refreshing YouTube token:", error);
+            return NextResponse.json({ error: "Failed to refresh YouTube tokens" }, { status: 500 });
           }
-        } catch (error) {
-          console.error("Error refreshing YouTube token:", error);
-          return NextResponse.json({ error: "Failed to refresh YouTube tokens" }, { status: 500 });
+        } else {
+          return NextResponse.redirect(new URL("/404", request.url));
         }
       }
-
     }
-
     return NextResponse.next();
   } else {
     if (
@@ -71,6 +92,7 @@ export async function middleware(request: NextRequest) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }
+      return NextResponse.next();
 }
 
 export const config = {
