@@ -1,5 +1,4 @@
-
-export const Member = ({ username, img, roleColor, role }) => {
+export const Member = ({ username, img, roleColor, role }: { username: string, img: string, roleColor: string, role: string }) => {
   return <div className="flex justify-between">
     <div className="flex gap-2 items-center">
       <img src={`${img}`} className="rounded-full h-8 w-8" alt="user-1" />

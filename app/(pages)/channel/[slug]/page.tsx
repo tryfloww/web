@@ -2,6 +2,8 @@
 import { useParams } from 'next/navigation';
 import { Info } from './Info';
 import { Team } from './Team';
+import { Scheduled } from './Scheduled';
+import { Pending } from './Pending';
 
 export default function ChannelPage() {
   const router = useParams()
@@ -14,9 +16,14 @@ export default function ChannelPage() {
           <Team />
         </div>
       </div>
-      <div className="w-2/3 h-full p-2">
+      <div className="w-full md:w-2/3 h-full p-2">
         <div className="w-full px-3 md:px-0 py-0 md:py-3 h-full flex flex-col gap-6">
-          <div className="w-full rounded-md p-3 bg-secondary dark:bg-secondary/30">right</div>
+          <div className="w-full h-full rounded-md md:flex-row flex-col flex">
+            <div className="flex h-full flex-col w-full md:w-1/3 flex-col">
+              <Scheduled />
+              <Pending />
+            </div>
+          </div>
         </div>
       </div>
     </div>
