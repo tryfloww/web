@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input"
 import { Member } from "./Member"
 
 export const Team = () => {
-  return <div className="h-[30rem] gap-4 dark:text-neutral-100 text-neutral-950 md:grow bg-secondary rounded-md dark:bg-secondary/30 p-4 flex flex-col">
+  return <div className="h-[30rem] shadow-lg gap-4 dark:text-neutral-100 text-neutral-950 md:grow bg-secondary rounded-md dark:bg-secondary/30 p-4 flex flex-col">
     <div className="flex items-center justify-between">
       <p className="text-xl">Team</p>
       <div className="flex gap-3">

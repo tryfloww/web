@@ -12,7 +12,8 @@ floww is a platform that allows youtubers to collaborate with their team, withou
 
 ### Tech Stack
 1. [Next.js](https://nextjs.org/)
-2. [Zustand](https://github.com/pmndrs/zustand) (state management)
-3. [ShadCN](https://ui.shadcn.com/) (ui components)
-4. [Drizzle](https://orm.drizzle.team/) (orm)
+2. [Zustand](https://github.com/pmndrs/zustand)(state management)
+3. [ShadCN](https://ui.shadcn.com/)(ui components)
+4. [Drizzle](https://orm.drizzle.team/)(orm)
 5. SQLite from [Turso](https://sqlite.tech)
+6. The soul numbing google apis.
