@@ -28,7 +28,7 @@ export default function ChannelPage() {
                 <p className="text-lg mb-4"> Videos and Playlists</p>
                 <div className="flex flex-col gap-3">
                   <div className="flex gap-2">
-                    <div className="w-48 h-28 bg-neutral-300 p-2"></div>
+                    <div className="w-48 h-28 bg-neutral-700 rounded-md p-2"></div>
                   </div>
                 </div>
               </div>
