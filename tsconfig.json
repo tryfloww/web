@@ -1,14 +1,19 @@
 {
   "compilerOptions": {
-    "strict": true,
-    "esModuleInterop": true,
-    "jsx": "react-jsx",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "node",
-    "baseUrl": ".",
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "allowJs": true,
+    "noEmit": true,
+    "strict": true,
+    "types": ["vinxi/types/client"],
+    "isolatedModules": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "~/*": ["./src/*"]
     }
   }
 }

@@ -1,23 +1,29 @@
-# Local
-.DS_Store
-*.local
-*.log*
 
-# Dist
-node_modules
-dist/
-.vinxi
+dist
+.solid
 .output
 .vercel
 .netlify
-.wrangler
+.vinxi
+app.config.timestamp_*.js
 
-# IDE
-.vscode/*
-!.vscode/extensions.json
-.idea
-
+# Environment
 .env
+.env*.local
 
-prisma/*.db
-prisma/*.db*
+# dependencies
+/node_modules
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+*.launch
+.settings/
+
+# Temp
+gitignore
+
+# System Files
+.DS_Store
+Thumbs.db
