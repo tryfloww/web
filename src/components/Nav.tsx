@@ -10,7 +10,7 @@ export default function Nav() {
       <div class="flex items-center gap-5">
         <A href="/dash" activeClass="text-lg">/dash</A>
         <A href="/prof" activeClass="text-lg">/prof</A>
-        <a href="/login" class="px-4 py-[6px] bg-red-600 text-white">log in</a>
+        <a href="/login" class="px-3 py-[4px] bg-red-600 text-white">log in</a>
       </div>
     </nav >
   );
