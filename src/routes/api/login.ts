@@ -2,8 +2,9 @@ import { z } from 'zod';
 import { createStore } from "solid-js/store";
 import type { FormFields } from "~/validators/login";
 import { loginSchema } from "~/validators/login";
+import { APIEvent } from "@solidjs/start/server";
 
-export async function POST(event) {
+export async function POST(event: APIEvent) {
   const data = await event.request.json()
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
   try {
