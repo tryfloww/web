@@ -1,13 +1,13 @@
 import { z } from 'zod';
 import { createStore } from "solid-js/store";
-import type { FormFields } from "~/validators/register";
-import { registerSchema } from "~/validators/register";
+import type { FormFields } from "~/validators/login";
+import { loginSchema } from "~/validators/login";
 
 export async function POST(event) {
   const data = await event.request.json()
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
   try {
-    console.log(registerSchema.parse(data));
+    console.log(loginSchema.parse(data));
     // do further checking
   } catch (err) {
     if (err instanceof z.ZodError) {

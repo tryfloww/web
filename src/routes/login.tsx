@@ -1,5 +1,34 @@
+import { createStore } from "solid-js/store";
+import { Component } from 'solid-js';
+import type { FormFields } from "~/validators/login";
 import { Title } from "@solidjs/meta";
-const Login = () => {
+
+const Login: Component = () => {
+  const [fields, setFields] = createStore<FormFields>({
+    username: "",
+    password: "",
+  });
+
+  const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
+
+  const handleChange = (e: Event) => {
+    const target = e.target as HTMLInputElement;
+    setFields({ [target.name]: target.value });
+  };
+
+  const submit = async (e: Event) => {
+    e.preventDefault();
+
+    const response = await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fields),
+    });
+
+    const data = await response.json()
+    setErrors(data.errors);
+  };
+
   return (
     <>
       <Title>login | floww</Title>
@@ -7,7 +36,7 @@ const Login = () => {
         <div
           class="absolute inset-0 h-full w-full bg-transparent bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:128px_128px]"
         ></div>
-        <form class="p-8 flex flex-col z-[10] lg:w-1/3 md:w-1/2 w-full bg-neutral-900">
+        <form onSubmit={submit} class="p-8 flex flex-col z-[10] lg:w-1/3 md:w-1/2 w-full bg-neutral-900">
           <h1 class="text-2xl">login to <span class="text-red-600 font-bold">floww.</span> </h1>
           <p class="mt-2 mb-6 text-neutral-400">welcome back fellow user.</p>
           <button class="bg-neutral-800 text-neutral-400 p-2 flex items-center gap-4 justify-center">
@@ -18,16 +47,16 @@ const Login = () => {
           <div class="group flex flex-col gap-2">
             <div class="flex md:flex-row flex-col px-2 gap-[5px] md:gap-3">
               <label class="text-neutral-400" for="username">username</label>
-              <p class="text-red-500">user does not exist</p>
+              {errors.username && <p class="text-red-500">{errors.username}</p>}
             </div>
-            <input class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="username" id="username" autocomplete="off" type="text" />
+            <input onInput={handleChange} class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="username" id="username" autocomplete="off" type="text" />
           </div>
           <div class="group flex mt-4 flex-col gap-2">
             <div class="flex md:flex-row flex-col px-2 gap-[5px] md:gap-3">
               <label class="text-neutral-400" for="password">password</label>
-              <p class="text-red-500">passwords do not match</p>
+              {errors.password && <p class="text-red-500">{errors.password}</p>}
             </div>
-            <input class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="password" id="password" type="password" autocomplete="off" />
+            <input onInput={handleChange} class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="password" id="password" type="password" autocomplete="off" />
           </div>
           <p class="my-5 text-neutral-400">not registered? <a class="text-red-500 underline" href="/register"> create a new account </a></p>
           <button type="submit" class="p-2 bg-red-600">login</button>

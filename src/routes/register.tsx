@@ -27,7 +27,8 @@ const Register: Component = () => {
       body: JSON.stringify(fields),
     });
 
-    setErrors(await response.json());
+    const data = await response.json()
+    setErrors(data.errors);
   };
 
   return (
