@@ -8,8 +8,8 @@ export default function Nav() {
       </div>
 
       <div class="flex items-center gap-5">
-        <A href="/dash" activeClass="text-lg">/dash</A>
-        <A href="/prof" activeClass="text-lg">/prof</A>
+        <A href="/dash">/dash</A>
+        <A href="/prof">/prof</A>
         <a href="/login" class="px-3 py-[4px] bg-red-600 text-white">log in</a>
       </div>
     </nav >

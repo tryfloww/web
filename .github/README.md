@@ -1,8 +1,8 @@
 <div align="center">
 <h2>floww</h2>
-<img src="https://i.imgur.com/VTrFdx4.png">
-<i>refining and redefining how youtuber's collaborate with their team.</i>
+<img src="https://i.imgur.com/BW3ua0E.png">
 <br>
+<i>refining and redefining how youtuber's collaborate with their team.</i>
 </div>
 
 ### About
@@ -10,7 +10,7 @@ floww is a platform that allows youtubers to collaborate with their team, withou
 
 ### Tech Stack 
 
-1. [tanstack](https://tanstack.com)
+1. [solid start](https://start.solidjs.com/)
 2. [prisma](https://prisma.io)
 3. based af sqlite
 4. soul numbing google apis
