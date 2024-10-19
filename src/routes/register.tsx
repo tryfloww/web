@@ -2,8 +2,10 @@ import { createStore } from "solid-js/store";
 import { Component } from 'solid-js';
 import type { FormFields } from "~/validators/register";
 import { Title } from "@solidjs/meta";
+import { useNavigate } from "@solidjs/router";
 
 const Register: Component = () => {
+  const navigate = useNavigate();
   const [fields, setFields] = createStore<FormFields>({
     username: "",
     email: "",
@@ -28,6 +30,9 @@ const Register: Component = () => {
     });
 
     const data = await response.json()
+    if (data.success) {
+      navigate("/login", { replace: true });
+    }
     setErrors(data.errors);
   };
 
