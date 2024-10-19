@@ -31,7 +31,7 @@ const Register: Component = () => {
 
     const data = await response.json()
     if (data.success) {
-      navigate("/login", { replace: true });
+      navigate("/", { replace: true });
     }
     setErrors(data.errors);
   };

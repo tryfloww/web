@@ -3,13 +3,45 @@ import { createStore } from "solid-js/store";
 import type { FormFields } from "~/validators/login";
 import { loginSchema } from "~/validators/login";
 import { APIEvent } from "@solidjs/start/server";
+import { db } from "~/lib/db";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { createSession } from "~/lib/utils"
 
 export async function POST(event: APIEvent) {
   const data = await event.request.json()
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
   try {
-    console.log(loginSchema.parse(data));
-    // do further checking
+    loginSchema.parse(data);
+    try {
+      const { email, password } = data;
+      const user = await db.user.findUnique({ where: { email } });
+
+      if (!user || !user.password || !await bcrypt.compare(password, user.password)) {
+        let es = errors;
+        es["username"] = "wrong password or email"
+        setErrors(es)
+        const final = {
+          errors,
+          success: false
+        }
+        return final
+      }
+
+      const accessToken = jwt.sign({ userId: user?.id }, process.env.JWT_SECRET as string);
+      await createSession(user!.id, 'local', accessToken);
+      event.response.headers.set('Set-Cookie', `jwt=${accessToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`);
+      return { success: true, errors: {} }
+    } catch (err) {
+      let es = errors;
+      es["username"] = "could not authenticate"
+      setErrors(es)
+      const final = {
+        errors,
+        success: false
+      }
+      return final
+    }
   } catch (err) {
     if (err instanceof z.ZodError) {
       const newErrors: Partial<Record<keyof FormFields, string>> = {};

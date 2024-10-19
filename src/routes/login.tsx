@@ -1,11 +1,13 @@
 import { createStore } from "solid-js/store";
 import { Component } from 'solid-js';
 import type { FormFields } from "~/validators/login";
+import { useNavigate } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
 
 const Login: Component = () => {
+  const navigate = useNavigate();
   const [fields, setFields] = createStore<FormFields>({
-    username: "",
+    email: "",
     password: "",
   });
 
@@ -26,6 +28,9 @@ const Login: Component = () => {
     });
 
     const data = await response.json()
+    if (data.success) {
+      navigate("/", { replace: true });
+    }
     setErrors(data.errors);
   };
 
@@ -46,10 +51,10 @@ const Login: Component = () => {
           <div class="sep my-5 bg-neutral-800 p-[1px]"></div>
           <div class="group flex flex-col gap-2">
             <div class="flex md:flex-row flex-col px-2 gap-[5px] md:gap-3">
-              <label class="text-neutral-400" for="username">username</label>
-              {errors.username && <p class="text-red-500">{errors.username}</p>}
+              <label class="text-neutral-400" for="email">email</label>
+              {errors.email && <p class="text-red-500">{errors.email}</p>}
             </div>
-            <input onInput={handleChange} class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="username" id="username" autocomplete="off" type="text" />
+            <input onInput={handleChange} class="bg-neutral-800 border-none outline-none focus:outline-none p-2" name="email" id="email" autocomplete="off" type="email" />
           </div>
           <div class="group flex mt-4 flex-col gap-2">
             <div class="flex md:flex-row flex-col px-2 gap-[5px] md:gap-3">

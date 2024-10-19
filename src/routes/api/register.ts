@@ -22,11 +22,11 @@ export async function POST(event: APIEvent) {
       });
       const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string);
       await createSession(user.id, 'local', accessToken);
+      event.response.headers.set('Set-Cookie', `jwt=${accessToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`);
       return {
         errors: [], success: true
       }
     } catch (err) {
-      console.log(err)
       let es = errors;
       es["username"] = "| user with this account / email exists"
       setErrors(es)
