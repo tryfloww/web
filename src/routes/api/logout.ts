@@ -1,8 +1,10 @@
 import { APIEvent } from "@solidjs/start/server"
 import { redirect } from "@solidjs/router"
+import { getSession } from "~/lib/utils"
 import { db } from "~/lib/db";
 
 export async function GET(event: APIEvent) {
+  const session = await getSession()
   const authHeader = event.request.headers.get('Authorization');
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -12,10 +14,6 @@ export async function GET(event: APIEvent) {
     });
   }
 
-  // Clear the JWT cookie
-  const headers = new Headers();
-  headers.append('Set-Cookie', 'jwt=; HttpOnly; Path=/; Max-Age=0; SameSite=Strict');
-
-  // Perform the redirect
-  return redirect('/', { headers });
+  await session.clear()
+  return redirect('/', {  });
 }

@@ -6,9 +6,10 @@ import { APIEvent } from "@solidjs/start/server";
 import { db } from "~/lib/db";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { createSession } from "~/lib/utils"
+import { createSession, getSession } from "~/lib/utils"
 
 export async function POST(event: APIEvent) {
+  const session = await getSession()
   const data = await event.request.json()
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
   try {
@@ -22,7 +23,10 @@ export async function POST(event: APIEvent) {
       });
       const accessToken = jwt.sign({ userId: user.id }, process.env.JWT_SECRET as string);
       await createSession(user.id, 'local', accessToken);
-      event.response.headers.set('Set-Cookie', `jwt=${accessToken}; HttpOnly; Path=/; Max-Age=${7 * 24 * 60 * 60}; SameSite=Strict`);
+      await session.update((d) => {
+        d.token = accessToken
+        d.userid = user?.id
+      })
       return {
         errors: [], success: true
       }
