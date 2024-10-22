@@ -33,7 +33,7 @@ export async function POST(event: APIEvent) {
       await createSession(user!.id, 'local', accessToken);
       await session.update((d) => {
         d.token = accessToken
-        d.userid = user?.id
+        d.userId = user?.id
       })
       return { success: true, errors: {} }
     } catch (err) {

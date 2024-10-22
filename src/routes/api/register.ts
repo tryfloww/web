@@ -25,14 +25,14 @@ export async function POST(event: APIEvent) {
       await createSession(user.id, 'local', accessToken);
       await session.update((d) => {
         d.token = accessToken
-        d.userid = user?.id
+        d.userId = user?.id
       })
       return {
         errors: [], success: true
       }
     } catch (err) {
       let es = errors;
-      es["username"] = "| user with this account / email exists"
+      es["username"] = "user with this account / email exists"
       setErrors(es)
       const final = {
         errors,
