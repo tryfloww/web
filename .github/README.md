@@ -1,6 +1,6 @@
 <div align="center">
 <h2>floww</h2>
-<img src="https://i.imgur.com/BW3ua0E.png">
+<img src="https://i.imgur.com/CyeRPdu.png">
 <br>
 <i>refining and redefining how youtuber's collaborate with their team.</i>
 </div>
