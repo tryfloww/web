@@ -1,5 +1,5 @@
 import { APIEvent } from "@solidjs/start/server"
-import { redirect } from "@solidjs/router"
+import { json } from "@solidjs/router"
 import { getSession } from "~/lib/utils"
 import { db } from "~/lib/db";
 
@@ -15,5 +15,5 @@ export async function GET(event: APIEvent) {
   }
 
   await session.clear()
-  return redirect('/', {  });
+  return json({ success: true });
 }
