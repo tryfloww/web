@@ -9,7 +9,7 @@ import jwt from "jsonwebtoken";
 import { createSession, getSession } from "~/lib/utils"
 
 export async function POST(event: APIEvent) {
-  const data = await event.request.json() 
+  const data = await event.request.json()
   const session = await getSession()
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
   try {
@@ -32,6 +32,8 @@ export async function POST(event: APIEvent) {
       const accessToken = jwt.sign({ userId: user?.id }, process.env.JWT_SECRET as string);
       await createSession(user!.id, 'local', accessToken);
       await session.update((d) => {
+        d.auth = "local"
+        d.email = email
         d.token = accessToken
         d.userId = user?.id
       })

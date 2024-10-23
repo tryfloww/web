@@ -1,19 +1,15 @@
-import { APIEvent } from "@solidjs/start/server"
 import { json } from "@solidjs/router"
 import { getSession } from "~/lib/utils"
 import { db } from "~/lib/db";
 
-export async function GET(event: APIEvent) {
+export async function GET() {
   const session = await getSession()
-  const authHeader = event.request.headers.get('Authorization');
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (token) {
+  if (session.data.userId) {
     await db.session.deleteMany({
-      where: { accessToken: token }
+      where: { accessToken: session.data.token }
     });
+    await session.clear()
+    return json({ success: true });
   }
-
-  await session.clear()
-  return json({ success: true });
+  return json({ success: false });
 }
