@@ -5,14 +5,14 @@ import { db } from "~/lib/db";
 import { google } from "~/lib/oauth";
 import { createSession, getSession } from "~/lib/utils";
 
-export async function POST(event: APIEvent) {
+export async function GET(event: APIEvent) {
   const url = new URL(event.request.url)
   const code = url.searchParams.get("code");
   const state = url.searchParams.get("state");
 
   const cookies = cookie.parse(event.request.headers.get("cookie")!)
   const codeVerifier = cookies["codeVerifier"]
-  const savedState = cookies["savedState"]
+  const savedState = cookies["state"]
 
   const session = await getSession()
 
@@ -21,12 +21,11 @@ export async function POST(event: APIEvent) {
   }
 
   if (!codeVerifier || !savedState) {
-    return json({ success: false, message: "NO CODE OR STATE" });
+    return json({ success: false, message: "NO CODE VERIFIER OR SAVED STATE" });
   }
 
   const { accessToken, accessTokenExpiresAt, refreshToken } =
     await google.validateAuthorizationCode(code, codeVerifier);
-
   const googleRes = await fetch(
     "https://www.googleapis.com/oauth2/v1/userinfo",
     {
@@ -35,7 +34,6 @@ export async function POST(event: APIEvent) {
     },
   );
   const googleData = await googleRes.json();
-  console.log(googleData, googleRes)
 
   const user = await db.user.upsert({
     where: { id: googleData.id },
@@ -53,5 +51,25 @@ export async function POST(event: APIEvent) {
     d.userId = user?.id
   })
 
-  return redirect(process.env.PUBLIC_BASE_URL!)
+  const headers = new Headers();
+  headers.append(
+    "Set-Cookie",
+    cookie.serialize("state", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      expires: new Date(0),
+    })
+  );
+  headers.append(
+    "Set-Cookie",
+    cookie.serialize("codeVerifier", "", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      expires: new Date(0),
+    })
+  );
+
+  return redirect(process.env.PUBLIC_BASE_URL!, { headers });
 }

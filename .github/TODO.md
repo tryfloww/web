@@ -7,5 +7,6 @@
         - [x] Frontend 
         - [x] Actual implementation
         - [x] Logout
-        - [ ] Protected routes 
-        - [ ] Oauth
+        - [x] Protected routes 
+        - [x] Oauth
+        - [ ] Some randomly generated avatar
