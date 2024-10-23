@@ -1,8 +1,26 @@
 import { createStore } from "solid-js/store";
-import { Component } from 'solid-js';
+import { Component, createResource } from 'solid-js';
 import type { FormFields } from "~/validators/register";
 import { Title } from "@solidjs/meta";
 import { useNavigate } from "@solidjs/router";
+import { useSession } from "vinxi/http";
+
+async function getUser() {
+  "use server";
+  try {
+    const session = await useSession({
+      password: process.env.SESSION_SECRET!
+    });
+    return session.data;
+  } catch (error) {
+    console.error("Session error:", error);
+    return null;
+  }
+}
+
+export const route = {
+  load: () => getUser()
+};
 
 const Register: Component = () => {
   const navigate = useNavigate();
@@ -13,6 +31,12 @@ const Register: Component = () => {
     confirmPassword: "",
   });
 
+  const [data] = createResource(async () => getUser());
+  if (data()! != undefined) {
+    if (data()!.userId) {
+      navigate("/", { replace: true })
+    }
+  }
   const [errors, setErrors] = createStore<Partial<Record<keyof FormFields, string>>>({});
 
   const handleChange = (e: Event) => {
