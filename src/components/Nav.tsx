@@ -1,13 +1,11 @@
 import { A, useLocation } from "@solidjs/router";
 import { Show, createResource, Suspense } from "solid-js";
-import { useSession } from "vinxi/http";
 import { useNavigate } from "@solidjs/router";
+import { getSession } from "~/lib/utils";
 async function getUser() {
   "use server";
   try {
-    const session = await useSession({
-      password: process.env.SESSION_SECRET!
-    });
+    const session = await getSession()
     return session.data;
   } catch (error) {
     console.error("Session error:", error);

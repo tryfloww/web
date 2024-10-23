@@ -3,15 +3,13 @@ import { Component, createResource } from 'solid-js';
 import type { FormFields } from "~/validators/login";
 import { useNavigate } from "@solidjs/router";
 import { Title } from "@solidjs/meta";
-import { useSession } from "vinxi/http";
 import { generateAuthUrl } from "~/lib/oauth";
+import { getSession } from "~/lib/utils";
 
 async function getUser() {
   "use server";
   try {
-    const session = await useSession({
-      password: process.env.SESSION_SECRET!
-    });
+    const session = await getSession()
     return session.data;
   } catch (error) {
     console.error("Session error:", error);

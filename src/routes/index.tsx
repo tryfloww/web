@@ -1,14 +1,14 @@
 import { Title } from "@solidjs/meta";
 import { Show, createResource, Suspense } from "solid-js";
-import { useSession } from "vinxi/http";
+import { getSession } from "~/lib/utils";
+import { getUserByEmail } from "~/services/user";
 
 async function getUser() {
   "use server";
   try {
-    const session = await useSession({
-      password: process.env.SESSION_SECRET!
-    });
-    return session.data;
+    const session = await getSession()
+    const user = await getUserByEmail(session.data.email!)
+    return user;
   } catch (error) {
     console.error("Session error:", error);
     return null;
@@ -26,11 +26,16 @@ export default function Home() {
       <Title>flowww</Title>
       <Suspense>
         <main class="text-center pt-24 p-8">
-          Hello,  <Show when={data()?.userId}>
-            {data()?.email}
+          <Show when={data()?.success}>
+            <div class="inline-flex gap-4 items-center">
+              <img src={`/api/avatar/${data()?.user?.name}`} alt="" class="w-10 rounded-full h-10" />
+              <p>
+                {data()?.user?.name}
+              </p>
+            </div>
           </Show>
-          <Show when={!data()?.userId}>
-            Anon
+          <Show when={!data()?.success}>
+            Hello, Anon
           </Show>
         </main>
       </Suspense>

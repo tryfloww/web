@@ -24,7 +24,7 @@ export async function GET(event: APIEvent) {
     return json({ success: false, message: "NO CODE VERIFIER OR SAVED STATE" });
   }
 
-  const { accessToken, accessTokenExpiresAt, refreshToken } =
+  const { accessToken, refreshToken } =
     await google.validateAuthorizationCode(code, codeVerifier);
   const googleRes = await fetch(
     "https://www.googleapis.com/oauth2/v1/userinfo",
