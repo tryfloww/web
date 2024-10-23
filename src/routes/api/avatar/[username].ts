@@ -77,7 +77,7 @@ export async function GET({ params }: APIEvent) {
     return new Response("Username is required", { status: 400 });
   }
 
-  const firstLetter = username.charAt(0).toUpperCase();
+  const firstLetter = username.charAt(0).toUpperCase() + username.charAt(1).toUpperCase();
   const hash = hashString(username);
 
   const grid = generateGrid(hash);
