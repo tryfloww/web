@@ -1,22 +1,17 @@
 ### The Todo List
 
 - [x] Basic Setup
-  - [x] Get drizzle set up
-  - [x] Google Oauth and account creation
-  - [x] Connect to youtube api
-  - [x] Dark and light mode
-  - [x] Refresh Tokens
-- [x] Channel Init
-  - [x] Add multiple channels
-    - [x] Owned
-    - [ ] Member of
-  - [x] Create Invites to channel
-  - [x] Refresh channel infos
-  - [x] Refresh Tokens
-  - [ ] Channel Specific pages
-- [ ] Invites and Roles
-    - [ ] Create Roles
-    - [ ] Create Invites 
-    - [ ] Accept / Reject Invites
-
-... more to come
+    - [x] Init a solid app 
+    - [x] Setup prisma with sqlite
+    - [x] Auth 
+        - [x] Frontend 
+        - [x] Actual implementation
+        - [x] Logout
+        - [x] Protected routes 
+        - [x] Oauth
+        - [x] Some randomly generated avatar
+- [ ] Basic youtube stuff 
+    - [ ] Youtube OAuth
+    - [ ] Connect channels 
+    - [ ] Channel data base 
+    - [ ] Merge with main
